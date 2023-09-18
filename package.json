@@ -1,0 +1,19 @@
+{
+  "name": "fsopen-bloglist",
+  "version": "0.1.0",
+  "description": "part 4 exercises",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zahgenya/fsopen-bloglist.git"
+  },
+  "author": "zhenya zah",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zahgenya/fsopen-bloglist/issues"
+  },
+  "homepage": "https://github.com/zahgenya/fsopen-bloglist#readme"
+}
