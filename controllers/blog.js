@@ -8,7 +8,7 @@ blogsRouter.get('/', (request, response) => {
   });
 });
 
-blogsRouter.get('/:id', (request, response) => {
+blogsRouter.get('/:id', (request, response, next) => {
   Blogs.findById(request.params.id)
     .then((blog) => {
       if (blog) {
@@ -18,11 +18,11 @@ blogsRouter.get('/:id', (request, response) => {
       }
     })
     .catch((error) => {
-      console.log('error:', error.message);
+      next(error);
     });
 });
 
-blogsRouter.post('/', (request, response) => {
+blogsRouter.post('/', (request, response, next) => {
   const body = request.body;
 
   const blog = new Blogs({
@@ -38,17 +38,17 @@ blogsRouter.post('/', (request, response) => {
       response.json(savedBlog);
     })
     .catch((error) => {
-      console.log('error:', error.message);
+      next(error);
     });
 });
 
-blogsRouter.delete('/:id', (request, response) => {
+blogsRouter.delete('/:id', (request, response, next) => {
   Blogs.findByIdAndRemove(request.params.id)
     .then(() => {
       response.status(204).end();
     })
     .catch((error) => {
-      console.log('error:', error.message);
+      next(error);
     });
 });
 
