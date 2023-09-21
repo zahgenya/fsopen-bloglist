@@ -32,9 +32,26 @@ const coolesAuthorFinder = (blogsArray) => {
     (author) => blogsCounts[author]
   );
 
-  return ({
+  return {
     author: coolestAuthor,
     blogs: blogsCounts[coolestAuthor],
+  };
+};
+
+const mostLikes = (blogsArray) => {
+  const authorLikes = _.groupBy(blogsArray, 'author');
+  const authorLikesSum = _.mapValues(authorLikes, (blogs) =>
+    _.sumBy(blogs, 'likes')
+  );
+  console.log(authorLikes)
+  const authorWithMostLikes = _.maxBy(
+    Object.keys(authorLikesSum),
+    (author) => authorLikesSum[author]
+  );
+
+  return({
+    author: authorWithMostLikes,
+    likes: authorLikesSum[authorWithMostLikes],
   });
 };
 
@@ -44,4 +61,5 @@ module.exports = {
   totalLikes,
   favoriteBlog,
   coolesAuthorFinder,
+  mostLikes,
 };
