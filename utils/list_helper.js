@@ -1,15 +1,32 @@
-const express = require('express')
-const blogRouter = require('../controllers/blog')
-const app = express()
+const Blogs = require('../models/blogs');
 
-const dummy = (blogs) => {
-    if (Array.isArray(blogs)) {
-      return 1;
-    } else {
-      return 0;
-    }
-  };
-  
-  module.exports = {
-    dummy
-  };
+const dummy = (blogs) => {};
+
+const blogsInDb = (props) => {
+  const blog = props;
+  return blog.map((blog) => blog.toJSON());
+};
+
+const totalLikes = (props) => {
+  const blogs = props;
+  let total = 0;
+
+  blogs.forEach((blog) => {
+    total += blog.likes;
+  });
+
+  return total;
+};
+
+const favoriteBlog = (blogsArray) => {
+  return blogsArray.reduce((maxLikes, currentBlog) => {
+    return currentBlog.likes > maxLikes.likes ? currentBlog : maxLikes;
+  }, blogsArray[0]);
+};
+
+module.exports = {
+  dummy,
+  blogsInDb,
+  totalLikes,
+  favoriteBlog,
+};
