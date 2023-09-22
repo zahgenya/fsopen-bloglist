@@ -7,21 +7,20 @@ blogsRouter.get('/', async (request, response) => {
   response.json(blog);
 });
 
-blogsRouter.get('/:id', (request, response, next) => {
-  Blogs.findById(request.params.id)
-    .then((blog) => {
-      if (blog) {
-        response.json(blog);
-      } else {
-        response.status(404).end();
-      }
-    })
-    .catch((error) => {
-      next(error);
-    });
+blogsRouter.get('/:id', async (request, response, next) => {
+  try {
+    const blog = await Blogs.findById(request.params.id);
+    if (note) {
+      response.json(blog);
+    } else {
+      response.status(404).end();
+    }
+  } catch (exception) {
+    next(exception);
+  }
 });
 
-blogsRouter.post('/', (request, response, next) => {
+blogsRouter.post('/', async (request, response, next) => {
   const body = request.body;
 
   const blog = new Blogs({
@@ -31,24 +30,13 @@ blogsRouter.post('/', (request, response, next) => {
     likes: body.likes,
   });
 
-  blog
-    .save()
-    .then((savedBlog) => {
-      response.status(201).json(savedBlog);
-    })
-    .catch((error) => {
-      next(error);
-    });
+  const savedBlog = await blog.save();
+  response.status(201).json(savedBlog);
 });
 
-blogsRouter.delete('/:id', (request, response, next) => {
-  Blogs.findByIdAndRemove(request.params.id)
-    .then(() => {
-      response.status(204).end();
-    })
-    .catch((error) => {
-      next(error);
-    });
+blogsRouter.delete('/:id', async (request, response, next) => {
+  await Blogs.findByIdAndRemove(request.params.id);
+  response.status(204).end();
 });
 
 module.exports = blogsRouter;
