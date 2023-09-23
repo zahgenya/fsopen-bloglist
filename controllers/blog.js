@@ -1,5 +1,4 @@
 const blogsRouter = require('express').Router();
-const { request } = require('express');
 const Blogs = require('../models/blogs');
 
 blogsRouter.get('/', async (request, response) => {
@@ -20,14 +19,14 @@ blogsRouter.get('/:id', async (request, response, next) => {
   }
 });
 
-blogsRouter.post('/', async (request, response, next) => {
+blogsRouter.post('/', async (request, response) => {
   const body = request.body;
 
   const blog = new Blogs({
     title: body.title,
     author: body.author,
     url: body.url,
-    likes: body.likes,
+    likes: body.likes || 0,
   });
 
   const savedBlog = await blog.save();
