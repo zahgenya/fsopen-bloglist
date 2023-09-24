@@ -9,7 +9,7 @@ blogsRouter.get('/', async (request, response) => {
 blogsRouter.get('/:id', async (request, response, next) => {
   try {
     const blog = await Blogs.findById(request.params.id);
-    if (note) {
+    if (blog) {
       response.json(blog);
     } else {
       response.status(404).end();
@@ -19,8 +19,12 @@ blogsRouter.get('/:id', async (request, response, next) => {
   }
 });
 
-blogsRouter.post('/', async (request, response) => {
+blogsRouter.post('/', async (request, response, next) => {
   const body = request.body;
+
+  if (!body.title || !body.author || !body.url) {
+    return response.status(400).json({ error: 'Missing required fields' });
+  }
 
   const blog = new Blogs({
     title: body.title,
@@ -29,8 +33,12 @@ blogsRouter.post('/', async (request, response) => {
     likes: body.likes || 0,
   });
 
-  const savedBlog = await blog.save();
-  response.status(201).json(savedBlog);
+  try {
+    const savedBlog = await blog.save();
+    response.status(201).json(savedBlog);
+  } catch (error) {
+    next(error);
+  }
 });
 
 blogsRouter.delete('/:id', async (request, response) => {
