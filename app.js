@@ -8,6 +8,7 @@ const middleware = require('./utils/middleware');
 const morganLogger = require('./utils/morganLogger');
 const mongoose = require('mongoose');
 const usersRouter = require('./controllers/users');
+const loginRouter = require('./controllers/login');
 
 mongoose.set('strictQuery', false);
 
@@ -27,6 +28,7 @@ app.use(express.json());
 app.use(express.static('dist'));
 app.use(morganLogger(morganLogger.format, morganLogger.options));
 
+app.use('/api/login', loginRouter);
 app.use('/api/blogs', blogsRouter);
 app.use('/api/users', usersRouter);
 

@@ -8,7 +8,7 @@ const bcrypt = require('bcryptjs');
 const Blogs = require('../models/blogs');
 const User = require('../models/user');
 
-descibe('tests for blogs', () => {
+describe('tests for blogs', () => {
   beforeEach(async () => {
     await Blogs.deleteMany({});
     await Blogs.insertMany(helper.initialBlogs);
@@ -179,6 +179,7 @@ describe('tests for users', () => {
     });
   });
 });
+
 afterAll(async () => {
   await mongoose.connection.close();
 });
