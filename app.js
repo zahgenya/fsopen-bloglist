@@ -10,6 +10,11 @@ const mongoose = require('mongoose');
 const usersRouter = require('./controllers/users');
 const loginRouter = require('./controllers/login');
 
+if (process.env.NODE_ENV === 'test') {
+  const testingRouter = require('./controllers/testing')
+  app.use('/api/testing', testingRouter)
+}
+
 mongoose.set('strictQuery', false);
 
 console.log('Connecting to', config.MONGODB_URI);
@@ -32,11 +37,6 @@ app.use(morganLogger(morganLogger.format, morganLogger.options));
 app.use('/api/login', loginRouter);
 app.use('/api/blogs', blogsRouter);
 app.use('/api/users', usersRouter);
-
-if (process.env.NODE_ENV === 'test') {
-  const testingRouter = require('./controllers/testing');
-  app.use('/api/testing', testingRouter);
-}
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
